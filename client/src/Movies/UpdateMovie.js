@@ -4,10 +4,10 @@ import Axios from 'axios'
 const UpdateMovie = props => {
 
     const [updatedMovie, setUpdatedMovie] = useState({
-        id: null,
+        id: new Date(),
         title: '',
         director: '',
-        metascore: null,
+        metascore: '',
         stars: []
     })
 
@@ -26,7 +26,6 @@ const UpdateMovie = props => {
     }
 
     const handleSubmit = e => {
-        e.preventDefault()
         Axios.put(`http://localhost:5000/api/movies/${props.match.params.id}`, updatedMovie)
             .then(res => props.setMovieList([...props.movieList, res.data]))
             .catch(err => console.error(err))
