@@ -18,13 +18,24 @@ const UpdateMovie = props => {
         })
     }
 
+    const handleArrayChange = e => {
+        setUpdatedMovie({
+            ...updatedMovie,
+            stars: e.target.value.split(',')
+        })
+    }
+
     const handleSubmit = e => {
         e.preventDefault()
         Axios.put(`http://localhost:5000/api/movies/${props.match.params.id}`, updatedMovie)
+            .then(res => props.setMovieList([...props.movieList, res.data]))
+            .catch(err => console.error(err))
+
+        props.history.push('/')
     }
 
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             <input
                 type='text'
                 name='title'
@@ -47,13 +58,13 @@ const UpdateMovie = props => {
                 onChange={handleChange}
             />
             <br/>
-            <label htmlFor='actors'>New Actors</label>
+            <label htmlFor='actors'>New Actors (seperate with " , ") </label>
             <input
                 type='text'
                 name='actors'
                 value={updatedMovie.actors}
-                placeholder='new actor'
-                onChange={handleChange}
+                placeholder='new actors'
+                onChange={handleArrayChange}
             />
 
             <button type='submit'>Update</button>
